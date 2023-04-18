@@ -23,5 +23,17 @@ public:
   virtual void Tick(float DeltaTime) override;
 
   UPROPERTY(EditAnywhere)
-  FVector EarthVector{FVector(1.1, 3.12, 43.12)};
+  FVector CubeLocation{FVector(-14959.0, -2012.0, 4023.0)};
+  UPROPERTY(EditAnywhere)
+  FVector CubeScale{FVector(2.5, 2.5, 0.2)};
+
+  UPROPERTY(EditAnywhere)
+  int32 MovementDeltaTick{1200};
+
+  UPROPERTY(EditAnywhere)
+  float ExcDeltaX{};
+  UPROPERTY(EditAnywhere)
+  float ExcDeltaY{};
+  UPROPERTY(EditAnywhere)
+  float ExcDeltaZ{};
 };

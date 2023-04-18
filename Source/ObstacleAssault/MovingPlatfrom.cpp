@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MovingPlatfrom.h"
-#include <algorithm>
+// #include <algorithm>
 
 // Sets default values
 AMovingPlatfrom::AMovingPlatfrom() {
@@ -14,8 +14,28 @@ AMovingPlatfrom::AMovingPlatfrom() {
 void AMovingPlatfrom::BeginPlay() {
   Super::BeginPlay();
 
-  std::swap(EarthVector.Y, EarthVector.Z);
+  SetActorLocation(CubeLocation);
+  SetActorScale3D(CubeScale);
+
+  ExcDeltaX = (1.0 - (CubeLocation.X)) / MovementDeltaTick;
+  ExcDeltaY = (2.0 - (CubeLocation.Y)) / MovementDeltaTick;
+  ExcDeltaZ = (3.0 - (CubeLocation.Z)) / MovementDeltaTick;
 }
 
 // Called every frame
-void AMovingPlatfrom::Tick(float DeltaTime) { Super::Tick(DeltaTime); }
+void AMovingPlatfrom::Tick(float DeltaTime) {
+
+  Super::Tick(DeltaTime);
+
+  if (CubeLocation.X < 1.0)
+    CubeLocation.X += ExcDeltaX;
+  if (CubeLocation.Y < 2.0)
+    CubeLocation.Y += ExcDeltaY;
+
+  if ((CubeLocation.X < -10750.0) && (CubeLocation.Y < -1610.0))
+    CubeLocation.Z -= ExcDeltaZ;
+  else if (CubeLocation.Z > 3.0)
+    CubeLocation.Z += ExcDeltaZ;
+
+  SetActorLocation(CubeLocation);
+}
