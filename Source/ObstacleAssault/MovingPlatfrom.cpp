@@ -69,6 +69,10 @@ void AMovingPlatfrom::Tick(float DeltaTime)
 	// Reverse direction of motion if gone too far
 	if (DistanceMoved > MoveDistance)
 	{
+		float OverShoot = DistanceMoved - MoveDistance;
+		// UE_LOG(LogTemp, Warning, TEXT("This body have overshoot: [%f]."), OverShoot);
+		V_LOGM(LogTemp, " has over shoot: %f", OverShoot);
+
 		FVector MoveDirection = PlatformVelocity.GetSafeNormal();
 		CubeStartLocation += MoveDirection * MoveDistance;
 		SetActorLocation(CubeStartLocation);
