@@ -4,38 +4,62 @@
 // #include <algorithm>
 
 // Sets default values
-AMovingPlatfrom::AMovingPlatfrom() {
-  // Set this actor to call Tick() every frame.  You can turn this off to
-  // improve performance if you don't need it.
-  PrimaryActorTick.bCanEverTick = true;
+AMovingPlatfrom::AMovingPlatfrom()
+{
+	// Set this actor to call Tick() every frame.  You can turn this off to
+	// improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 // Called when the game starts or when spawned
-void AMovingPlatfrom::BeginPlay() {
-  Super::BeginPlay();
+void AMovingPlatfrom::BeginPlay()
+{
+	Super::BeginPlay();
 
-  SetActorLocation(CubeLocation);
-  SetActorScale3D(CubeScale);
+	SetActorLocation(CubeStartLocation);
+	SetActorScale3D(CubeScale);
 
-  ExcDeltaX = (1.0 - (CubeLocation.X)) / MovementDeltaTick;
-  ExcDeltaY = (2.0 - (CubeLocation.Y)) / MovementDeltaTick;
-  ExcDeltaZ = (3.0 - (CubeLocation.Z)) / MovementDeltaTick;
+	PlatformVelocity.X = (CubeEndLocation.X - (CubeStartLocation.X)) / TimeToMove;	  // 1/60 seconds per frame
+	PlatformVelocity.Y = (CubeEndLocation.Y - (CubeStartLocation.Y)) / TimeToMove;
+	PlatformVelocity.Z = ((CubeEndLocation.Z - 5223.0) + (CubeStartLocation.Z - 5223.0)) / TimeToMove;
 }
 
 // Called every frame
-void AMovingPlatfrom::Tick(float DeltaTime) {
+void AMovingPlatfrom::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 
-  Super::Tick(DeltaTime);
+	// Move platform forwards
+	// Get current location
+	FVector CubeCurrentLocation = GetActorLocation();
+	// Add vector to that location
+	if (CubeCurrentLocation.X < CubeEndLocation.X)
+		CubeCurrentLocation.X += PlatformVelocity.X * DeltaTime;
+	else if (CubeCurrentLocation.X > (CubeEndLocation.X + 1.0))
+		CubeCurrentLocation.X -= 0.1 * PlatformVelocity.X * DeltaTime;
+	if (CubeCurrentLocation.Y < CubeEndLocation.Y)
+		CubeCurrentLocation.Y += PlatformVelocity.Y * DeltaTime;
+	else if (CubeCurrentLocation.Y > (CubeEndLocation.Y + 1.0))
+		CubeCurrentLocation.Y -= 0.1 * PlatformVelocity.Y * DeltaTime;
 
-  if (CubeLocation.X < 1.0)
-    CubeLocation.X += ExcDeltaX;
-  if (CubeLocation.Y < 2.0)
-    CubeLocation.Y += ExcDeltaY;
+	if ((CubeCurrentLocation.Z < 5223.0) && GoingUp)
+		CubeCurrentLocation.Z -= PlatformVelocity.Z * DeltaTime;
+	else if (CubeCurrentLocation.Z > CubeEndLocation.Z)
+	{
+		GoingUp = false;
+		CubeCurrentLocation.Z += PlatformVelocity.Z * DeltaTime;
+	}
+	else if ((CubeCurrentLocation.Z < (CubeEndLocation.Z - 10.0)) && !GoingUp)
+	{
+		CubeCurrentLocation.Z -= 0.1 * PlatformVelocity.Z * DeltaTime;
+	}
+	// CubeCurrentLocation += PlatformVelocity * DeltaTime;
+	// Set the new location
+	SetActorLocation(CubeCurrentLocation);
 
-  if ((CubeLocation.X < -10750.0) && (CubeLocation.Y < -1610.0))
-    CubeLocation.Z -= ExcDeltaZ;
-  else if (CubeLocation.Z > 3.0)
-    CubeLocation.Z += ExcDeltaZ;
+	DistanceFromStart = static_cast<float>(FVector::Dist(CubeStartLocation, CubeCurrentLocation));
 
-  SetActorLocation(CubeLocation);
+	// Send platform back if gone to far
+	// Check how far we've moved
+	// Reverse direction of motion if gone too far
 }
