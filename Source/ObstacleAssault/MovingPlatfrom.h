@@ -24,20 +24,21 @@ class OBSTACLEASSAULT_API AMovingPlatfrom : public AActor
 		virtual void Tick(float DeltaTime) override;
 
 		UPROPERTY(EditAnywhere)
-		FVector CubeStartLocation{ FVector(-14959.0, -2022.0, 4023.0) };
-		UPROPERTY(EditAnywhere)
-		FVector CubeEndLocation{ FVector(1.0, 2.0, 50.0) };
-		UPROPERTY(EditInstanceOnly)
-		bool GoingUp{ true };
+		FVector CubeStartLocation{ FVector(-14959.0, -1800.0, 4023.0) };
+		// UPROPERTY(EditAnywhere)
+		// FVector CubeEndLocation{ FVector(1.0, 2.0, 50.0) };
+		// UPROPERTY(EditInstanceOnly)
+		// bool GoingUp{ true };
 
 		UPROPERTY(EditAnywhere)
-		FVector CubeScale{ FVector(2.5, 2.5, 0.2) };
+		// FVector CubeScale{ FVector(2.5, 2.5, 0.2) };
+		FVector CubeScale{ FVector(1.0, 1.0, 1.0) };
 
-		UPROPERTY(EditAnywhere)
-		int32 TimeToMove{ 30 };	   // seconds
+		// UPROPERTY(EditAnywhere)
+		// int32 TimeToMove{ 30 };	   // seconds
 
-		UPROPERTY(VisibleAnywhere)
-		float DistanceFromStart{};
+		// UPROPERTY(VisibleAnywhere)
+		// float DistanceFromStart{};
 		// UPROPERTY(EditAnywhere)
 		// float ExcDeltaX{};
 		// UPROPERTY(EditAnywhere)
@@ -47,4 +48,7 @@ class OBSTACLEASSAULT_API AMovingPlatfrom : public AActor
 
 		UPROPERTY(EditAnywhere, Category = "Moving Platform")
 		FVector PlatformVelocity{ FVector(0, 0, 0) };
+
+		UPROPERTY(EditAnywhere, Category = "Moving Platform")
+		float MoveDistance{ 100.0 };
 };
