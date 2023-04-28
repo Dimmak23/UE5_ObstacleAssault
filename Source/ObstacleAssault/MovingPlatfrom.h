@@ -93,9 +93,9 @@ class OBSTACLEASSAULT_API AMovingPlatfrom : public AActor
 	private:
 		void MovePlatform(const float& DeltaTime);
 
-		void RotatePlatform(const float& DeltaTime) {}
+		void RotatePlatform(const float& DeltaTime);
 
-		bool CheckOvershooting();
+		bool CheckOvershooting() const;
 
 		float GetDistanceMoved() const;
 
@@ -103,17 +103,20 @@ class OBSTACLEASSAULT_API AMovingPlatfrom : public AActor
 
 		void GoToPoint();
 
-		UPROPERTY(EditAnywhere)
-		FVector CubeStartLocation{ FVector(-14959.0, -1800.0, 4023.0) };
+		// UPROPERTY(EditAnywhere)
+		FVector CubeStartLocation{ FVector(0.0, 0.0, 0.0) };
 
-		UPROPERTY(EditAnywhere)
-		FVector CubeScale{ FVector(1.0, 1.0, 1.0) };
+		// UPROPERTY(EditAnywhere)
+		// FVector CubeScale{ FVector(1.0, 1.0, 1.0) };
 
-		UPROPERTY(EditAnywhere, Category = "Moving Platform")
+		UPROPERTY(EditAnywhere, Category = "Moving")
 		FVector PlatformVelocity{ FVector(0, 0, 0) };
 
-		UPROPERTY(EditAnywhere, Category = "Moving Platform")
-		float MoveDistance{ 100.0 };
+		UPROPERTY(EditAnywhere, Category = "Moving")
+		float MoveDistance{};
+
+		UPROPERTY(EditAnywhere, Category = "Rotation")
+		FRotator RotationVelocity{};
 };
 
 // UPROPERTY(EditAnywhere)

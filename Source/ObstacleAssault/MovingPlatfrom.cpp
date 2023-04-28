@@ -15,8 +15,11 @@ void AMovingPlatfrom::BeginPlay()
 {
 	Super::BeginPlay();
 
+	CubeStartLocation = GetActorLocation();
+
 	SetActorLocation(CubeStartLocation);
-	SetActorScale3D(CubeScale);
+
+	// SetActorScale3D(CubeScale);
 
 	// this->CalculateVelocity();
 }
@@ -29,6 +32,8 @@ void AMovingPlatfrom::Tick(float DeltaTime)
 	// this->GoToPoint();
 
 	this->MovePlatform(DeltaTime);
+
+	this->RotatePlatform(DeltaTime);
 }
 
 void AMovingPlatfrom::MovePlatform(const float& DeltaTime)
@@ -56,11 +61,16 @@ void AMovingPlatfrom::MovePlatform(const float& DeltaTime)
 	}
 }
 
-bool AMovingPlatfrom::CheckOvershooting()
+void AMovingPlatfrom::RotatePlatform(const float& DeltaTime)
 {
-	float DistanceMoved = FVector::Dist(CubeStartLocation, GetActorLocation());
-	return DistanceMoved <= MoveDistance;
+	// FRotator CurrentRotation = GetActorRotation();
+	// CurrentRotation += RotationVelocity * DeltaTime;
+	// SetActorRotation(CurrentRotation);
+	AddActorLocalRotation(/* CurrentRotation +  */ RotationVelocity * DeltaTime);
 }
+
+// return true when everuthing is okay
+bool AMovingPlatfrom::CheckOvershooting() const { return this->GetDistanceMoved() <= MoveDistance; }
 
 float AMovingPlatfrom::GetDistanceMoved() const { return FVector::Dist(CubeStartLocation, GetActorLocation()); }
 
